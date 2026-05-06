@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>매출 차트</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+      background: #f0f4f8;
+      color: #1e293b;
+      padding: 32px 28px;
+      min-height: 100vh;
+    }
+
+    header {
+      margin-bottom: 28px;
+    }
+    header h1 { font-size: 1.5rem; font-weight: 800; color: #1e293b; }
+    header p  { font-size: 0.85rem; color: #64748b; margin-top: 4px; }
+
+    .charts {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 18px;
+      padding: 28px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .card-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 6px;
+    }
+    .card-sub {
+      font-size: 0.78rem;
+      color: #94a3b8;
+      margin-bottom: 20px;
+    }
+
+    /* ── 공통 SVG 래퍼 ── */
+    .chart-wrap { width: 100%; overflow: visible; }
+
+    /* ── 툴팁 ── */
+    .tooltip {
+      position: fixed;
+      background: #1e293b;
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 8px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s;
+      white-space: nowrap;
+      z-index: 999;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    }
+    .tooltip::after {
+      content: '';
+      position: absolute;
+      bottom: -5px; left: 50%;
+      transform: translateX(-50%);
+      border: 5px solid transparent;
+      border-bottom: none;
+      border-top-color: #1e293b;
+    }
+
+    /* ── 범례 ── */
+    .legend {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+    .legend-item {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 0.78rem; color: #475569;
+    }
+    .legend-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+    }
+
+    /* ── 요약 카드 ── */
+    .summary-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    .stat {
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 14px 16px;
+      border: 1px solid #e2e8f0;
+    }
+    .stat .s-label { font-size: 0.73rem; color: #94a3b8; margin-bottom: 3px; }
+    .stat .s-val   { font-size: 1.2rem; font-weight: 800; color: #1e293b; }
+    .stat .s-sub   { font-size: 0.72rem; color: #94a3b8; margin-top: 1px; }
+    .stat.blue { background: linear-gradient(135deg, #2563eb, #3b82f6); border-color: transparent; }
+    .stat.blue .s-label, .stat.blue .s-val, .stat.blue .s-sub { color: #fff; }
+
+    @media (max-width: 900px) {
+      .charts { grid-template-columns: 1fr; }
+      .summary-row { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>📈 매출 분석 차트</h1>
+  <p>데이터 기간: 2026-01-05 ~ 2026-02-10 &nbsp;·&nbsp; 총 30건 거래</p>
+</header>
+
+<!-- 요약 수치 -->
+<div class="summary-row" style="margin-bottom:20px;">
+  <div class="stat blue">
+    <div class="s-label">총 매출</div>
+    <div class="s-val">7,100만원</div>
+    <div class="s-sub">30건 거래</div>
+  </div>
+  <div class="stat">
+    <div class="s-label">최고 일매출</div>
+    <div class="s-val">1,011만원</div>
+    <div class="s-sub">2026-02-01</div>
+  </div>
+  <div class="stat">
+    <div class="s-label">최고 제품</div>
+    <div class="s-val">무선 이어폰</div>
+    <div class="s-sub">2,884만원</div>
+  </div>
+  <div class="stat">
+    <div class="s-label">평균 일매출</div>
+    <div class="s-val">710만원</div>
+    <div class="s-sub">거래일 기준</div>
+  </div>
+</div>
+
+<div class="charts">
+
+  <!-- ① 선 그래프: 날짜별 매출 추이 -->
+  <div class="card">
+    <div class="card-title">📅 날짜별 매출 추이</div>
+    <div class="card-sub">단위: 만원 · 거래일 기준</div>
+    <svg id="lineChart" class="chart-wrap" viewBox="0 0 520 260" preserveAspectRatio="xMidYMid meet"></svg>
+    <div class="legend">
+      <div class="legend-item">
+        <span class="legend-dot" style="background:#2563eb;"></span> 1월
+      </div>
+      <div class="legend-item">
+        <span class="legend-dot" style="background:#10b981;"></span> 2월
+      </div>
+    </div>
+  </div>
+
+  <!-- ② 막대 그래프: 제품별 누적 매출 -->
+  <div class="card">
+    <div class="card-title">📦 제품별 누적 매출</div>
+    <div class="card-sub">단위: 만원 · 전체 기간 합계</div>
+    <svg id="barChart" class="chart-wrap" viewBox="0 0 520 260" preserveAspectRatio="xMidYMid meet"></svg>
+  </div>
+
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+  /* ── 데이터 (매출데이터.csv 집계) ── */
+  const lineData = [
+    { date: '1/5',  value: 7075000,  month: 1 },
+    { date: '1/8',  value: 8413000,  month: 1 },
+    { date: '1/12', value: 4135000,  month: 1 },
+    { date: '1/15', value: 8122000,  month: 1 },
+    { date: '1/19', value: 5060000,  month: 1 },
+    { date: '1/22', value: 9029000,  month: 1 },
+    { date: '1/26', value: 4665000,  month: 1 },
+    { date: '2/1',  value: 10110000, month: 2 },
+    { date: '2/5',  value: 6195000,  month: 2 },
+    { date: '2/10', value: 8202000,  month: 2 },
+  ];
+
+  const barData = [
+    { name: '무선 이어폰',     value: 28836000 },
+    { name: '텀블러',          value: 11525000 },
+    { name: '블루투스 스피커', value: 9600000  },
+    { name: '보조배터리',      value: 9030000  },
+    { name: '에코백',          value: 6165000  },
+    { name: '무선 충전기',     value: 5850000  },
+  ];
+
+  /* ── 유틸 ── */
+  const fmt  = n => (n / 10000).toLocaleString('ko-KR', { maximumFractionDigits: 0 }) + '만원';
+  const fmt2 = n => Math.round(n / 10000).toLocaleString('ko-KR') + '만원';
+
+  const SVG_NS = 'http://www.w3.org/2000/svg';
+  function el(tag, attrs = {}, parent) {
+    const e = document.createElementNS(SVG_NS, tag);
+    for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+
+  const tooltip = document.getElementById('tooltip');
+  function showTip(e, text) {
+    tooltip.textContent = text;
+    tooltip.style.opacity = 1;
+    moveTip(e);
+  }
+  function moveTip(e) {
+    tooltip.style.left = (e.clientX - tooltip.offsetWidth / 2) + 'px';
+    tooltip.style.top  = (e.clientY - tooltip.offsetHeight - 12) + 'px';
+  }
+  function hideTip() { tooltip.style.opacity = 0; }
+
+  /* ────────────────────────────────
+     선 그래프
+  ──────────────────────────────── */
+  (function drawLine() {
+    const svg = document.getElementById('lineChart');
+    const W = 520, H = 260;
+    const PAD = { top: 20, right: 20, bottom: 36, left: 54 };
+    const cW = W - PAD.left - PAD.right;
+    const cH = H - PAD.top  - PAD.bottom;
+
+    const maxV = Math.max(...lineData.map(d => d.value));
+    const minV = 0;
+    const xStep = cW / (lineData.length - 1);
+
+    const scaleX = i  => PAD.left + i * xStep;
+    const scaleY = v  => PAD.top + cH - ((v - minV) / (maxV - minV)) * cH;
+
+    /* 그라디언트 정의 */
+    const defs = el('defs', {}, svg);
+    const grad = el('linearGradient', { id:'lineGrad', x1:'0', y1:'0', x2:'0', y2:'1' }, defs);
+    el('stop', { offset:'0%',   'stop-color':'#2563eb', 'stop-opacity':'0.18' }, grad);
+    el('stop', { offset:'100%', 'stop-color':'#2563eb', 'stop-opacity':'0' },    grad);
+
+    /* Y축 그리드 */
+    const yTicks = 5;
+    for (let i = 0; i <= yTicks; i++) {
+      const v = (maxV / yTicks) * i;
+      const y = scaleY(v);
+      el('line', { x1: PAD.left, y1: y, x2: W - PAD.right, y2: y,
+                   stroke: '#e2e8f0', 'stroke-width': '1',
+                   'stroke-dasharray': i === 0 ? 'none' : '4 3' }, svg);
+      el('text', { x: PAD.left - 8, y: y + 4,
+                   'text-anchor': 'end', fill: '#94a3b8',
+                   'font-size': '10', 'font-family': 'inherit' }, svg)
+        .textContent = Math.round(v / 10000).toLocaleString() + '만';
+    }
+
+    /* 영역 채우기 */
+    const areaPoints = [
+      `${scaleX(0)},${H - PAD.bottom}`,
+      ...lineData.map((d, i) => `${scaleX(i)},${scaleY(d.value)}`),
+      `${scaleX(lineData.length - 1)},${H - PAD.bottom}`,
+    ].join(' ');
+    el('polygon', { points: areaPoints, fill: 'url(#lineGrad)' }, svg);
+
+    /* 꺾은선 */
+    const points = lineData.map((d, i) => `${scaleX(i)},${scaleY(d.value)}`).join(' ');
+    el('polyline', { points, fill: 'none', stroke: '#2563eb', 'stroke-width': '2.5',
+                     'stroke-linejoin': 'round', 'stroke-linecap': 'round' }, svg);
+
+    /* 2월 구간 강조선 */
+    const feb0 = lineData.findIndex(d => d.month === 2);
+    if (feb0 > 0) {
+      el('line', { x1: scaleX(feb0), y1: PAD.top, x2: scaleX(feb0), y2: H - PAD.bottom,
+                   stroke: '#10b981', 'stroke-width': '1.5',
+                   'stroke-dasharray': '5 3', 'stroke-opacity': '0.5' }, svg);
+      const lbl = el('text', { x: scaleX(feb0) + 5, y: PAD.top + 12,
+                                fill: '#10b981', 'font-size': '9.5', 'font-weight': '700',
+                                'font-family': 'inherit' }, svg);
+      lbl.textContent = '2월';
+    }
+
+    /* 데이터 포인트 */
+    lineData.forEach((d, i) => {
+      const cx = scaleX(i), cy = scaleY(d.value);
+      const color = d.month === 1 ? '#2563eb' : '#10b981';
+
+      /* 히트 영역 (투명, 넓게) */
+      const hit = el('circle', { cx, cy, r: '14', fill: 'transparent', cursor: 'pointer' }, svg);
+      /* 포인트 */
+      const outer = el('circle', { cx, cy, r: '5', fill: '#fff', stroke: color, 'stroke-width': '2.5' }, svg);
+
+      hit.addEventListener('mouseenter', e => {
+        outer.setAttribute('r', '7');
+        showTip(e, `${d.date}  ${fmt2(d.value)}`);
+      });
+      hit.addEventListener('mousemove', moveTip);
+      hit.addEventListener('mouseleave', () => { outer.setAttribute('r', '5'); hideTip(); });
+    });
+
+    /* X축 레이블 */
+    lineData.forEach((d, i) => {
+      el('text', { x: scaleX(i), y: H - PAD.bottom + 16,
+                   'text-anchor': 'middle', fill: '#64748b',
+                   'font-size': '10', 'font-family': 'inherit' }, svg)
+        .textContent = d.date;
+    });
+  })();
+
+  /* ────────────────────────────────
+     막대 그래프
+  ──────────────────────────────── */
+  (function drawBar() {
+    const svg = document.getElementById('barChart');
+    const W = 520, H = 260;
+    const PAD = { top: 20, right: 20, bottom: 50, left: 54 };
+    const cW = W - PAD.left - PAD.right;
+    const cH = H - PAD.top  - PAD.bottom;
+
+    const maxV = Math.max(...barData.map(d => d.value));
+    const n    = barData.length;
+    const barW = cW / n * 0.56;
+    const gap  = cW / n;
+
+    const scaleY = v => PAD.top + cH - (v / maxV) * cH;
+
+    /* Y축 그리드 */
+    const yTicks = 4;
+    for (let i = 0; i <= yTicks; i++) {
+      const v = (maxV / yTicks) * i;
+      const y = scaleY(v);
+      el('line', { x1: PAD.left, y1: y, x2: W - PAD.right, y2: y,
+                   stroke: '#e2e8f0', 'stroke-width': '1',
+                   'stroke-dasharray': i === 0 ? 'none' : '4 3' }, svg);
+      el('text', { x: PAD.left - 8, y: y + 4,
+                   'text-anchor': 'end', fill: '#94a3b8',
+                   'font-size': '10', 'font-family': 'inherit' }, svg)
+        .textContent = Math.round(v / 10000).toLocaleString() + '만';
+    }
+
+    /* 그라디언트 팔레트 (파랑→초록) */
+    const colors = [
+      ['#1d4ed8','#3b82f6'],
+      ['#0d9488','#14b8a6'],
+      ['#1e40af','#60a5fa'],
+      ['#065f46','#34d399'],
+      ['#1e3a8a','#93c5fd'],
+      ['#064e3b','#6ee7b7'],
+    ];
+
+    const defs = svg.querySelector('defs') || el('defs', {}, svg);
+
+    barData.forEach((d, i) => {
+      const [c1, c2] = colors[i];
+      const gradId = `bg${i}`;
+      const grad = el('linearGradient', { id: gradId, x1:'0', y1:'0', x2:'0', y2:'1' }, defs);
+      el('stop', { offset:'0%',   'stop-color': c1 }, grad);
+      el('stop', { offset:'100%', 'stop-color': c2 }, grad);
+
+      const x  = PAD.left + gap * i + (gap - barW) / 2;
+      const bH = (d.value / maxV) * cH;
+      const y  = PAD.top + cH - bH;
+      const r  = 5;
+
+      /* 막대 (위쪽 모서리만 둥글게: path) */
+      const path = `M${x+r},${y} L${x+barW-r},${y} Q${x+barW},${y} ${x+barW},${y+r}
+                    L${x+barW},${y+bH} L${x},${y+bH} L${x},${y+r}
+                    Q${x},${y} ${x+r},${y} Z`;
+      const bar = el('path', { d: path, fill: `url(#${gradId})`,
+                                cursor: 'pointer', opacity: '1',
+                                style: 'transition: opacity 0.15s' }, svg);
+
+      /* 수치 레이블 */
+      const valLbl = el('text', { x: x + barW / 2, y: y - 5,
+                                   'text-anchor': 'middle', fill: c1,
+                                   'font-size': '9.5', 'font-weight': '700',
+                                   'font-family': 'inherit' }, svg);
+      valLbl.textContent = Math.round(d.value / 10000).toLocaleString() + '만';
+
+      /* X축 레이블 (2줄) */
+      const words = d.name.split(' ');
+      words.forEach((w, wi) => {
+        el('text', { x: x + barW / 2,
+                     y: H - PAD.bottom + 14 + wi * 13,
+                     'text-anchor': 'middle', fill: '#475569',
+                     'font-size': '10', 'font-family': 'inherit' }, svg)
+          .textContent = w;
+      });
+
+      bar.addEventListener('mouseenter', e => {
+        bar.style.opacity = '0.8';
+        showTip(e, `${d.name}  ${fmt2(d.value)}`);
+      });
+      bar.addEventListener('mousemove', moveTip);
+      bar.addEventListener('mouseleave', () => { bar.style.opacity = '1'; hideTip(); });
+    });
+  })();
+</script>
+
+</body>
+</html>

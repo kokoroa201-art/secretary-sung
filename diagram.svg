@@ -1,0 +1,156 @@
+<svg width="800" height="200" viewBox="0 0 800 200"
+     xmlns="http://www.w3.org/2000/svg"
+     font-family="'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',sans-serif">
+
+  <defs>
+    <!-- 카드 그림자 -->
+    <filter id="shadow" x="-8%" y="-8%" width="116%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#00000018"/>
+    </filter>
+
+    <!-- 화살표 마커 -->
+    <marker id="arr" markerWidth="12" markerHeight="8"
+            refX="11" refY="4" orient="auto" markerUnits="userSpaceOnUse">
+      <polygon points="0,0 12,4 0,8" fill="#94a3b8"/>
+    </marker>
+
+    <!-- 단계별 그라디언트 -->
+    <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFD6E7"/>
+      <stop offset="100%" stop-color="#FFC0D9"/>
+    </linearGradient>
+    <linearGradient id="g2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFE8CC"/>
+      <stop offset="100%" stop-color="#FFD6A5"/>
+    </linearGradient>
+    <linearGradient id="g3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#D4F1DF"/>
+      <stop offset="100%" stop-color="#B8E8CB"/>
+    </linearGradient>
+    <linearGradient id="g4" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#C9E4FA"/>
+      <stop offset="100%" stop-color="#AACFF5"/>
+    </linearGradient>
+    <linearGradient id="g5" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#E4D4F4"/>
+      <stop offset="100%" stop-color="#D4BCEE"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 전체 배경 -->
+  <rect width="800" height="200" rx="16" fill="#F8FAFC"/>
+
+  <!-- 배경 장식 선 (수평 중심) -->
+  <line x1="30" y1="100" x2="770" y2="100"
+        stroke="#E2E8F0" stroke-width="1" stroke-dasharray="4 3"/>
+
+
+  <!-- ═══════════ STEP 1 : 기획 ═══════════ -->
+  <rect x="30" y="40" width="122" height="120" rx="14"
+        fill="url(#g1)" stroke="#F9A8C9" stroke-width="1.5"
+        filter="url(#shadow)"/>
+  <!-- 상단 색 띠 -->
+  <rect x="30" y="40" width="122" height="8" rx="14" fill="#F48FB1"/>
+  <rect x="30" y="44" width="122" height="4" fill="#F48FB1"/>
+  <!-- STEP 번호 -->
+  <text x="91" y="66" text-anchor="middle"
+        font-size="9.5" font-weight="800" fill="#C2185B" letter-spacing="1">STEP 1</text>
+  <!-- 아이콘 (연필) -->
+  <text x="91" y="101" text-anchor="middle" dominant-baseline="middle"
+        font-size="26">📝</text>
+  <!-- 이름 -->
+  <text x="91" y="124" text-anchor="middle"
+        font-size="15" font-weight="800" fill="#880E4F">기획</text>
+  <!-- 영문 -->
+  <text x="91" y="141" text-anchor="middle"
+        font-size="9.5" fill="#E91E8C" letter-spacing="0.5">Planning</text>
+
+
+  <!-- 화살표 1 -->
+  <line x1="154" y1="100" x2="171" y2="100"
+        stroke="#94a3b8" stroke-width="2.5" marker-end="url(#arr)"
+        stroke-linecap="round"/>
+
+
+  <!-- ═══════════ STEP 2 : 제작 ═══════════ -->
+  <rect x="183" y="40" width="122" height="120" rx="14"
+        fill="url(#g2)" stroke="#FFB74D" stroke-width="1.5"
+        filter="url(#shadow)"/>
+  <rect x="183" y="40" width="122" height="8" rx="14" fill="#FFA726"/>
+  <rect x="183" y="44" width="122" height="4" fill="#FFA726"/>
+  <text x="244" y="66" text-anchor="middle"
+        font-size="9.5" font-weight="800" fill="#E65100" letter-spacing="1">STEP 2</text>
+  <text x="244" y="101" text-anchor="middle" dominant-baseline="middle"
+        font-size="26">🎨</text>
+  <text x="244" y="124" text-anchor="middle"
+        font-size="15" font-weight="800" fill="#BF360C">제작</text>
+  <text x="244" y="141" text-anchor="middle"
+        font-size="9.5" fill="#F57C00" letter-spacing="0.5">Production</text>
+
+
+  <!-- 화살표 2 -->
+  <line x1="307" y1="100" x2="324" y2="100"
+        stroke="#94a3b8" stroke-width="2.5" marker-end="url(#arr)"
+        stroke-linecap="round"/>
+
+
+  <!-- ═══════════ STEP 3 : 검토 ═══════════ -->
+  <rect x="336" y="40" width="122" height="120" rx="14"
+        fill="url(#g3)" stroke="#81C784" stroke-width="1.5"
+        filter="url(#shadow)"/>
+  <rect x="336" y="40" width="122" height="8" rx="14" fill="#66BB6A"/>
+  <rect x="336" y="44" width="122" height="4" fill="#66BB6A"/>
+  <text x="397" y="66" text-anchor="middle"
+        font-size="9.5" font-weight="800" fill="#1B5E20" letter-spacing="1">STEP 3</text>
+  <text x="397" y="101" text-anchor="middle" dominant-baseline="middle"
+        font-size="26">🔍</text>
+  <text x="397" y="124" text-anchor="middle"
+        font-size="15" font-weight="800" fill="#1B5E20">검토</text>
+  <text x="397" y="141" text-anchor="middle"
+        font-size="9.5" fill="#388E3C" letter-spacing="0.5">Review</text>
+
+
+  <!-- 화살표 3 -->
+  <line x1="460" y1="100" x2="477" y2="100"
+        stroke="#94a3b8" stroke-width="2.5" marker-end="url(#arr)"
+        stroke-linecap="round"/>
+
+
+  <!-- ═══════════ STEP 4 : 배포 ═══════════ -->
+  <rect x="489" y="40" width="122" height="120" rx="14"
+        fill="url(#g4)" stroke="#64B5F6" stroke-width="1.5"
+        filter="url(#shadow)"/>
+  <rect x="489" y="40" width="122" height="8" rx="14" fill="#42A5F5"/>
+  <rect x="489" y="44" width="122" height="4" fill="#42A5F5"/>
+  <text x="550" y="66" text-anchor="middle"
+        font-size="9.5" font-weight="800" fill="#0D47A1" letter-spacing="1">STEP 4</text>
+  <text x="550" y="101" text-anchor="middle" dominant-baseline="middle"
+        font-size="26">🚀</text>
+  <text x="550" y="124" text-anchor="middle"
+        font-size="15" font-weight="800" fill="#0D47A1">배포</text>
+  <text x="550" y="141" text-anchor="middle"
+        font-size="9.5" fill="#1565C0" letter-spacing="0.5">Deploy</text>
+
+
+  <!-- 화살표 4 -->
+  <line x1="613" y1="100" x2="630" y2="100"
+        stroke="#94a3b8" stroke-width="2.5" marker-end="url(#arr)"
+        stroke-linecap="round"/>
+
+
+  <!-- ═══════════ STEP 5 : 분석 ═══════════ -->
+  <rect x="642" y="40" width="122" height="120" rx="14"
+        fill="url(#g5)" stroke="#CE93D8" stroke-width="1.5"
+        filter="url(#shadow)"/>
+  <rect x="642" y="40" width="122" height="8" rx="14" fill="#BA68C8"/>
+  <rect x="642" y="44" width="122" height="4" fill="#BA68C8"/>
+  <text x="703" y="66" text-anchor="middle"
+        font-size="9.5" font-weight="800" fill="#4A148C" letter-spacing="1">STEP 5</text>
+  <text x="703" y="101" text-anchor="middle" dominant-baseline="middle"
+        font-size="26">📊</text>
+  <text x="703" y="124" text-anchor="middle"
+        font-size="15" font-weight="800" fill="#4A148C">분석</text>
+  <text x="703" y="141" text-anchor="middle"
+        font-size="9.5" fill="#7B1FA2" letter-spacing="0.5">Analysis</text>
+
+</svg>
