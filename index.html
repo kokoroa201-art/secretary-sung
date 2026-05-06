@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>워크숍 실습 결과물</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+      padding: 40px 20px;
+    }
+    .container { width: 100%; max-width: 560px; }
+    .header {
+      text-align: center; margin-bottom: 32px;
+    }
+    .header h1 { font-size: 1.6rem; font-weight: 800; color: #fff; margin-bottom: 6px; text-shadow: 0 2px 12px rgba(0,0,0,0.2); }
+    .header p  { font-size: 0.85rem; color: rgba(255,255,255,0.75); }
+
+    .cards { display: flex; flex-direction: column; gap: 14px; }
+    .card {
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 16px;
+      padding: 20px 24px;
+      text-decoration: none;
+      display: flex; align-items: center; gap: 16px;
+      transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      background: rgba(255,255,255,0.25);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.2);
+    }
+    .card-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; flex-shrink: 0;
+    }
+    .card-body { flex: 1; }
+    .card-title { font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 3px; }
+    .card-desc  { font-size: 0.8rem; color: rgba(255,255,255,0.72); }
+    .card-arrow { font-size: 1.1rem; color: rgba(255,255,255,0.5); flex-shrink: 0; }
+
+    .footer { text-align: center; margin-top: 28px; font-size: 0.75rem; color: rgba(255,255,255,0.5); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>📋 워크숍 실습 결과물</h1>
+      <p>Claude Code 워크숍 · 2026년 5월</p>
+    </div>
+    <div class="cards">
+      <a class="card" href="./dashboard.html">
+        <div class="card-icon" style="background:rgba(139,92,246,0.3);">📊</div>
+        <div class="card-body">
+          <div class="card-title">김비서 대시보드</div>
+          <div class="card-desc">할 일 · 일정 · 프로젝트 · 매출 · 다크/라이트 모드</div>
+        </div>
+        <span class="card-arrow">›</span>
+      </a>
+      <a class="card" href="./chart.html">
+        <div class="card-icon" style="background:rgba(59,130,246,0.3);">📈</div>
+        <div class="card-body">
+          <div class="card-title">매출 분석 차트</div>
+          <div class="card-desc">날짜별 선 그래프 · 제품별 막대 그래프 (순수 SVG)</div>
+        </div>
+        <span class="card-arrow">›</span>
+      </a>
+      <a class="card" href="./diagram.svg">
+        <div class="card-icon" style="background:rgba(16,185,129,0.3);">🔄</div>
+        <div class="card-body">
+          <div class="card-title">업무 프로세스 다이어그램</div>
+          <div class="card-desc">기획 → 제작 → 검토 → 배포 → 분석 플로우</div>
+        </div>
+        <span class="card-arrow">›</span>
+      </a>
+      <a class="card" href="./report.html">
+        <div class="card-icon" style="background:rgba(245,158,11,0.3);">📝</div>
+        <div class="card-body">
+          <div class="card-title">SubTrackr 사이트 분석 리포트</div>
+          <div class="card-desc">구조 · 기능 · 잘한점 · 개선점 · 종합 평가</div>
+        </div>
+        <span class="card-arrow">›</span>
+      </a>
+    </div>
+    <div class="footer">kokoroa201-art/secretary-sung</div>
+  </div>
+</body>
+</html>
